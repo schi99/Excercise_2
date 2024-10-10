@@ -25,11 +25,25 @@ with a given annual interest rate
 
 """
 
-balance = 484
 annual_interest_rate = 0.2
 payment_months = 12
+increment = 10 # monthly payment should be a multiple of 10
+paid = False # setting this as False, as in the beginning debt is not paid
 
-monthly_payment = 0 
+for num_increments in range(1, 100000): # we guess a range for multiples of 10 that should cover the right min payment
+    balance = 3926
+    fixed_monthly_payment = num_increments * increment # making sure that payment is a multiple of 10
+    for month in range(1, payment_months + 1):  # adding 1 to include the 12th month
+        remaining = balance - fixed_monthly_payment
+        balance = remaining + (remaining*(annual_interest_rate/12))
+        if balance <= 0: # if balance is less than 0 we have managed to pay the debt and can break the loop
+            paid = True
+            break
+    if paid is True:
+        print("Lowest payment: ", fixed_monthly_payment)
+        break
+if paid is False: # making sure that we know when the payments weren't enough to pay the debt
+    print("Debt not paid!")
 
 
 
