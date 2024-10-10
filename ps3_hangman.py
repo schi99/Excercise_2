@@ -1,4 +1,5 @@
 # Hangman game
+# 
 #
 
 # -----------------------------------
@@ -50,10 +51,11 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-
+    # Allways False till all letters are righte
     for i in secret_word:
         if i not in letters_guessed:
             return False
+      
     return True
 
 
@@ -146,6 +148,22 @@ def hangman(secret_word):
 
            if guess in letters_guessed:
             print(f"You allready tried letter {guess} , choos anotherone")
+            print(f"You have {limit - guesses} left")
+            continue
+
+           if guess in secret_word:
+            
+            letters_guessed.append(guess)
+            
+            print(f"Good guess the letter {guess} is in the search word")
+            print(f"You have {limit - guesses} left")
+
+            progress = get_guessed_word(secret_word, letters_guessed)
+            print(f"This is the progress you made so far: {progress}")
+
+            available_letters = get_available_letters(letters_guessed)
+            print(f"You can choose one of the follwing letters: {available_letters}")
+
             continue
 
            else:
