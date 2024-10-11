@@ -4,6 +4,7 @@ Task 1:
 
 Calculating the credit card balance after one year with minimum monthly payments 
 with the given annual and monthly payment rates and 12 months of payments
+
 """
 balance = 484
 annual_interest_rate = 0.2
@@ -15,7 +16,7 @@ for month in range(1, payment_months + 1):  #adding 1 to include the 12th month
         remaining = balance - min_payment
         balance = remaining + (remaining*(annual_interest_rate/12))
 
-print("Remaining balance: ", format(balance, '.2f')) #formating the result to 2 decimals
+print(f"Remaining balance: {balance:.2f}") #formating the result to 2 decimals
 
 """
 Task 2:
@@ -46,4 +47,43 @@ if paid is False: # making sure that we know when the payments weren't enough to
     print("Debt not paid!")
 
 
+"""
+Task 3:
 
+Using bisection search to find out the exact minimum fixed monthly payment more efficiently to pay off the debt in one year
+
+"""
+
+import time
+
+t1 = time.time()
+
+initial_balance = 999999
+annual_interest_rate = 0.18
+monthly_interest_rate = annual_interest_rate / 12
+payment_months = 12
+
+# setting the lower and upper bound for the search
+low = initial_balance / 12
+high = (initial_balance * (1 + monthly_interest_rate)**12) / 12
+
+paid = False 
+
+while paid is False: # the loop continues until paid is defined True
+    balance = initial_balance  # defining the balance at the beginning so that the balance is always the same in the beginning of the loop 
+    fixed_monthly_payment = (high+low)/2
+    for month in range(1, payment_months + 1):  # adding 1 to include the 12th month
+        remaining = balance - fixed_monthly_payment
+        balance = remaining + (remaining*monthly_interest_rate)
+        if abs(balance) < 0.01: # finding the fixed payment with one cent accuracy; loop break when this happens
+            paid = True
+            print(f"Lowest payment: {fixed_monthly_payment:.2f}")
+            break
+    if balance > 0.01:
+        low = fixed_monthly_payment
+    else: 
+        high = fixed_monthly_payment
+
+t2 = time.time()
+
+print(f"Time in seconds: {t2-t1:.4f}")
